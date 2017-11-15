@@ -1,0 +1,61 @@
+一、用户相关(以手机号作为用户凭证)
+1.用户注册(添加用户-只做自助注册，因此不需要判断权限）
+api_Users.php
+ActionType=RegUser&Mob=XX&Pswd=XX&nam=XX
+
+2.用户资料修改
+api_Users.php
+ActionType=UpdUser&Mob=XX（必传）
+Pswd=XX&nam=XX&stat=X&Rights=XX(可单填，也可多填，填哪个即改哪个)
+stat取值：  1-启用 -1已停用。
+Rights取值：SuperAdmin-超级管理员,Admin-管理员,Investors-投资方,Manager-管理者,Finance-酒店财务,Client-注册用户(默认)
+
+3.用户登陆(不需要判断权限)
+api_Users.php
+ActionType=LoginUser&Mob=XX&Pswd=XX
+
+4.用户注消(不调用都可以，因为后端不维护登陆状态)
+api_Users.php
+ActionType=logoutUser
+
+5.更改用户的启用/停用状态
+api_Users.php
+ActionType=UserStat_Change&Mob=要更改的用户手机号&stat=1/-1&LoginMob=操作用户的手机号
+
+6.更改用户权限级别
+api_Users.php 
+ActionType=UserRights_Change&Mob=要更改的用户手机号&Rights=1/-1&LoginMob=操作用户的手机号
+Rights取值：SuperAdmin-超级管理员,Admin-管理员,Investors-投资方,Manager-管理者,Finance-酒店财务,Client-注册用户(默认)
+
+7.获取用户列表
+api_Users.php 
+ActionType=GetUserInfo&Mob=XX&HotelID=XX (条件中，二选1，即只能按一种条件查)
+
+二、酒店操作相关
+1.获取指定用户管理的酒店,参数都必填 
+api_Hotels.php
+data={'Action':'User_Hotel_Get','Mob'='XXX'}
+
+2.把用户和酒店进行关联,,参数都必填
+Operate为Add时，增加关联，为Dec时，删除关联
+api_Hotels.php
+data={'Action':'User_Hotel_Link','Mob'='XXX','HotelID':'XXX','Operate':'Add/Dec'}
+Data中增加字段 LoginMob  为登陆人的手机号
+
+3.增加酒店,参数都必填
+api_Hotels.php
+data={'Action':'AddHotel','HotelName'='XXX','Description':'XXX','Address':'XXX','Telephone':'XXX','HotelPic':'XXX','LinkMan':'XXX','LinkManMobile':'XXX','longitude':XX,'latitude':XX}
+Data中增加字段 LoginMob  为登陆人的手机号
+
+4.修改指定酒店信息,Action和HotelID必填，其他选填，但至少填一个
+api_Hotels.php
+data={'Action':'UpdHotel','HotelID':'XXX','HotelName'='XXX','Description':'XXX','Address':'XXX','Telephone':'XXX','HotelPic':'XXX','LinkMan':'XXX','LinkManMobile':'XXX','longitude':XX,'latitude':XX}
+Data中增加字段 LoginMob  为登陆人的手机号
+
+三、实时房界
+1.查看实时房态
+api_XCX.php
+ActionType=GetRoom&stat=XX&rtp=XX&floorid=XX
+添加参数 LoginMob=登陆人的手机号
+
+2.获取房型和楼层的接口未变化
